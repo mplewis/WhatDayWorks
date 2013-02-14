@@ -1,20 +1,19 @@
 from flask import Flask, render_template
+import datetime
+from gencal import gen_calendar
+
 app = Flask(__name__)
 
 app.debug = True
 
-
-test_cal = [
-	[None, None, None, None, 1, 2, 3],
-	[4, 5, 6, 7, 8, 9, 10],
-	[11, 12, 13, 14, 15, 16, 17],
-	[18, 19, 20, 21, 22, 23, 24],
-	[25, 26, 27, 28, 29, 30, None]
-]
+start_date = datetime.datetime.now()
+end_date = start_date + datetime.timedelta(days=90)
+test_cal = gen_calendar(start_date, end_date)
+english_month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 @app.route('/')
 def home():
-    return render_template('index.html', calendar=test_cal)
+    return render_template('index.html', calendar=test_cal, month_names=english_month_names)
 
 if __name__ == '__main__':
     app.run()
