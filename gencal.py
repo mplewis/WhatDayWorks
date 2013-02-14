@@ -5,6 +5,7 @@ import datetime
 cal = calendar(6) # week starts on Sunday
 translate_sundays = [1, 2, 3, 4, 5, 6, 0]
 day_names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
@@ -16,27 +17,25 @@ if __name__ == '__main__':
 
     prev_month_num = None
 
-    all_months = []
+    all_months = {}
     this_month = []
 
     for single_date in daterange(start_date, end_date):
         this_month_num = single_date.month
         if prev_month_num != this_month_num:
-            print 'New month!'
-            prev_month_num = this_month_num
             if this_month != []:
-                print this_month
-                all_months.append(this_month)
+                all_months[prev_month_num] = this_month
                 this_month = []
+            prev_month_num = this_month_num
 
         this_month.append(single_date)
 
     if this_month != []:
-        all_months.append(this_month)
+        all_months[this_month_num] = this_month
 
-    pprint(all_months)
+    months_by_week = {}
 
-    for month in all_months:
+    for month_num, month in all_months.items():
         all_weeks = []
         this_week = [None, None, None, None, None, None, None]
         for day in month:            
@@ -50,4 +49,10 @@ if __name__ == '__main__':
         if this_week != [None, None, None, None, None, None, None]:
             all_weeks.append(this_week)
 
-        pprint(all_weeks)
+        months_by_week[month_num] = all_weeks
+
+    for month_num, month in months_by_week.items():
+        month_name = month_names[month_num - 1]
+        print month_name
+        pprint(month)
+        print
