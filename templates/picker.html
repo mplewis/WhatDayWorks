@@ -24,50 +24,76 @@ Datepicker Demo
 </div>
 <div class="row row-padded centered">
     <span class="text-big">
-        I want to <input class="input-flat" type="text" placeholder-fix="do something fun" style="width: 350px;">
+        I want to <input class="input-flat" type="text" placeholder-fix="do something fun" style="width: 350px;"> with friends
     </span>
 </div>
 <div class="row row-padded centered">
     <span class="text-big">between</span>
     <span class="datebox date-from valid-date"></span>
     <span class="text-big">and</span>
-    <span class="datebox date-to valid-date"></span>
-    
+    <span class="datebox date-to valid-date" style="margin-right: 0px"></span><span class="text-big">!</span>
 </div>
 <div class="row row-padded centered">
-    <span class="text-small">(that's <span class="num-days">a few</span> days)</span><span class="text-big">
-        with friends!
+    <span class="text-small">
+        <span class="num-days-text">
+            (that's 
+            <span class="num-days">
+                7 days</span>)
+        </span>
+        <span class="error-days-text" style="display: none;">
+            (your start date must come before your end date)
+        </span>
     </span>
+</div>
+<div class="row row-padded centered" style="margin-top: 40px;">
+    <button class="btn btn-huge btn-primary btn-submit" type="button">Make It So</button>
 </div>
 {% endblock %}
 
 {% block body_post %}
 <script>
     var dateFormat = 'ddd, MMM Do';
+    var dateFrom = null;
+    var dateTo = null;
 
     $(document).ready(function() {
-        var dateFrom = moment();
-        var dateTo = moment().add('days', 6);
+        dateFrom = moment.utc();
+        dateTo = moment.utc().add('days', 6);
         $('.date-from').text(dateFrom.format(dateFormat));
         $('.date-to').text(dateTo.format(dateFormat));
         console.log('Done');
     });
     
+    
     function validateDays() {
-
+        if (dateFrom >= dateTo) {
+            $('.error-days-text').show();
+            $('.num-days-text').hide();
+            $('.datebox').addClass('invalid-date');
+            $('.datebox').removeClass('valid-date');
+            $('.btn-submit').addClass('disabled');
+        } else {
+            var daysBetween = dateFrom.from(dateTo, true)
+            $('.num-days').text(daysBetween)
+            $('.num-days-text').show();
+            $('.error-days-text').hide();
+            $('.datebox').addClass('valid-date');
+            $('.datebox').removeClass('invalid-date');
+            $('.btn-submit').removeClass('disabled');
+        }
     }
     
     // initialize datepickers on .datebox objects
     $('.date-from').datepicker()
         .on('changeDate', function(ev) {
-            dateFrom = moment(ev.date);
+            dateFrom = moment.utc(ev.date);
             var strDate = dateFrom.format(dateFormat);
             this.innerHTML = strDate;
             validateDays();
         });
     $('.date-to').datepicker()
         .on('changeDate', function(ev) {
-            dateTo = moment(ev.date);
+            dateTo = moment.utc(ev.date);
             var strDate = dateTo.format(dateFormat);
             this.innerHTML = strDate;
             validateDays();

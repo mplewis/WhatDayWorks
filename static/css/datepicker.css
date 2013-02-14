@@ -1,8 +1,8 @@
 .datebox {
   height: 40px;
   font-size: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-left: 5px;
   margin-right: 5px; }
 
@@ -17,10 +17,12 @@
   text-align: center; }
 
 .valid-date {
-  background-color: #9df59e; }
+  background-color: #9df59e;
+  border-bottom: 3px solid #5bb75b; }
 
 .invalid-date {
-  background-color: #f5aaa9; }
+  background-color: #f5aaa9;
+  border-bottom: 3px solid #bd3625; }
 
 .row-padded {
   margin-top: 15px; }
@@ -49,3 +51,10 @@ input.input-flat {
     box-shadow: none;
     -webkit-box-shadow: none;
     border-bottom: 3px solid #cccccc; }
+
+button.btn-huge {
+  border-radius: 8px;
+  height: 75px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 40px; }
