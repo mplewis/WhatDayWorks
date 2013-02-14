@@ -6,6 +6,8 @@ Datepicker Demo
 
 {% block head %}
 <script src="/static/js/bootstrap-datepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/1.7.2/moment.min.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap-datepicker.css" media="all">
 <link rel="stylesheet" href="/static/css/datepicker.css" media="all">
 {% endblock %}
 
@@ -15,10 +17,76 @@ Datepicker Demo
         Datepicker Demo
     </h1>
 </div>
-<div class="row">
-    <div class="input-append date" id="datepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-        <input size="16" type="text" value="12-02-2012" readonly>
-        <span class="add-on"><i class="icon-th"></i></span>
-    </div>
+<div class="row row-padded centered">
+    <span class="text-big">
+        My name is <input class="input-flat" type="text" placeholder-fix="" style="width: 250px;">.
+    </span>
 </div>
+<div class="row row-padded centered">
+    <span class="text-big">
+        I want to <input class="input-flat" type="text" placeholder-fix="do something fun" style="width: 350px;">
+    </span>
+</div>
+<div class="row row-padded centered">
+    <span class="text-big">between</span>
+    <span class="datebox date-from valid-date"></span>
+    <span class="text-big">and</span>
+    <span class="datebox date-to valid-date"></span>
+    
+</div>
+<div class="row row-padded centered">
+    <span class="text-small">(that's <span class="num-days">a few</span> days)</span><span class="text-big">
+        with friends!
+    </span>
+</div>
+{% endblock %}
+
+{% block body_post %}
+<script>
+    var dateFormat = 'ddd, MMM Do';
+
+    $(document).ready(function() {
+        var dateFrom = moment();
+        var dateTo = moment().add('days', 6);
+        $('.date-from').text(dateFrom.format(dateFormat));
+        $('.date-to').text(dateTo.format(dateFormat));
+        console.log('Done');
+    });
+    
+    function validateDays() {
+
+    }
+    
+    // initialize datepickers on .datebox objects
+    $('.date-from').datepicker()
+        .on('changeDate', function(ev) {
+            dateFrom = moment(ev.date);
+            var strDate = dateFrom.format(dateFormat);
+            this.innerHTML = strDate;
+            validateDays();
+        });
+    $('.date-to').datepicker()
+        .on('changeDate', function(ev) {
+            dateTo = moment(ev.date);
+            var strDate = dateTo.format(dateFormat);
+            this.innerHTML = strDate;
+            validateDays();
+        });
+
+    // use placeholder-fix instead of placeholder for text boxes to get it to look right
+    $('[placeholder-fix]')
+        .focus(function() {
+            var input = $(this);
+            if (input.val() == input.attr('placeholder-fix')) {
+                input.val('');
+                input.removeClass('placeholder-fix');
+            }
+        }).blur(function() {
+            var input = $(this);
+            if (input.val() == '' || input.val() == input.attr('placeholder-fix')) {
+                input.addClass('placeholder-fix');
+                input.val(input.attr('placeholder-fix'));
+            }
+        }).blur();
+</script>
 {% endblock %}
