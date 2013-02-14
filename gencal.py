@@ -2,7 +2,6 @@ from pprint import pprint
 from calendar import calendar
 import datetime
 
-cal = calendar(6) # week starts on Sunday
 translate_sundays = [1, 2, 3, 4, 5, 6, 0]
 day_names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -11,10 +10,7 @@ def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + datetime.timedelta(n)
 
-if __name__ == '__main__':
-    start_date = datetime.datetime.now()
-    end_date = start_date + datetime.timedelta(days=25)
-
+def gen_calendar(start_date, end_date):
     prev_month_num = None
 
     all_months = {}
@@ -44,14 +40,22 @@ if __name__ == '__main__':
                 all_weeks.append(this_week)
                 this_week = [None, None, None, None, None, None, None]
             weekday_name = day_names[weekday_num]
-            this_week[weekday_num] = day
+            day_num = day.day
+            this_week[weekday_num] = day_num
 
         if this_week != [None, None, None, None, None, None, None]:
             all_weeks.append(this_week)
 
         months_by_week[month_num] = all_weeks
 
-    for month_num, month in months_by_week.items():
+    return months_by_week
+
+if __name__ == '__main__':
+    start_date = datetime.datetime.now()
+    end_date = start_date + datetime.timedelta(days=90)
+    cal = gen_calendar(start_date, end_date)
+
+    for month_num, month in cal.items():
         month_name = month_names[month_num - 1]
         print month_name
         pprint(month)
