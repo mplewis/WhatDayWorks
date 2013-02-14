@@ -1,78 +1,74 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>What Day Works</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="/static/css/calendar.css" rel="stylesheet" media="screen">
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <h1 style="margin-top: 40px;">What Day Works?</h1>
-        </div>
-        <div class="row">
-            <table class="calendar no-select">
-                <thead>
-                    <tr>
-                        <td><a class="btn btn-info btn-calendar weekday">S</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">M</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">T</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">W</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">Th</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">F</a></td>
-                        <td><a class="btn btn-info btn-calendar weekday">Sa</a></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for month_num, month_data in calendar.items() %}
-                    <tr><td colspan="7"><h2 class="month-name">{{ month_names[month_num - 1] }}</h2></td></tr>
-                    {% for cal_row in month_data %}
-                    <tr>
-                        {% for day_num in cal_row %}
-                            {% if day_num is none %}
-                                <td/>
-                            {% else %}
-                                <td>
-                                    <a class="btn btn-calendar day {{ loop.cycle('sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat') }}">{{ day_num }}</a>
-                                </td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            <a class="btn btn-danger clear-all">Clear All</a>
-        </div>
-    </div>
-    <script>
-        $('.btn-calendar.day').mousedown(function() {
-            $(this).toggleClass('btn-success');
-        });
+{% extends "base.html" %}
 
-        $('.clear-all').mousedown(function() {
-            $('.btn-calendar.day').removeClass('btn-success');
-        })
-        
-        // http://chris-barr.com/wordpress/2009/02/disable_text_selection_with_jquery/
-        $(document).ready(function(){
-            $(function(){
-                $.extend($.fn.disableTextSelect = function() {
-                    return this.each(function() {
-                        $(this).mousedown(function() {
-                            return false;
-                        });
+{% block title %}
+What Day Works
+{% endblock %}
+
+{% block body_container %}
+<div class="row">
+    <h1 style="margin-top: 40px;">What Day Works?</h1>
+</div>
+<div class="row">
+    <table class="calendar no-select">
+        <thead>
+            <tr>
+                <td><a class="btn btn-info btn-calendar weekday">S</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">M</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">T</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">W</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">Th</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">F</a></td>
+                <td><a class="btn btn-info btn-calendar weekday">Sa</a></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month_num, month_data in calendar.items() %}
+            <tr><td colspan="7"><h2 class="month-name">{{ month_names[month_num - 1] }}</h2></td></tr>
+            {% for cal_row in month_data %}
+            <tr>
+                {% for day_num in cal_row %}
+                    {% if day_num is none %}
+                        <td/>
+                    {% else %}
+                        <td>
+                            <a class="btn btn-calendar day {{ loop.cycle('sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat') }}">{{ day_num }}</a>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <a class="btn btn-danger clear-all">Clear All</a>
+</div>
+{% endblock %}
+
+{% block body_post %}
+<script>
+    $('.btn-calendar.day').mousedown(function() {
+        $(this).toggleClass('btn-success');
+    });
+
+    $('.clear-all').mousedown(function() {
+        $('.btn-calendar.day').removeClass('btn-success');
+    })
+    
+    // http://chris-barr.com/wordpress/2009/02/disable_text_selection_with_jquery/
+    $(document).ready(function(){
+        $(function(){
+            $.extend($.fn.disableTextSelect = function() {
+                return this.each(function() {
+                    $(this).mousedown(function() {
+                        return false;
                     });
                 });
-                // No text selection on elements with a class of 'no-select'
-                $('.no-select').disableTextSelect();
             });
+            // No text selection on elements with a class of 'no-select'
+            $('.no-select').disableTextSelect();
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+{% endblock %}
