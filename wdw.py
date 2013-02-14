@@ -15,5 +15,9 @@ english_month_names = ['January', 'February', 'March', 'April', 'May', 'June', '
 def home():
     return render_template('index.html', calendar=test_cal, month_names=english_month_names)
 
+@app.route('/picker/')
+def picker():
+    return render_template('picker.html')
+
 if __name__ == '__main__':
     app.run()
