@@ -52,19 +52,23 @@ Datepicker Demo
 
 {% block body_post %}
 <script>
+    // ddd, MMM Do -> Fri, Jan 11
     var dateFormat = 'ddd, MMM Do';
+
+    // dateFrom and dateTo are moment objects
     var dateFrom = null;
     var dateTo = null;
 
+    // initialize the boxes with today and today + 7 days
     $(document).ready(function() {
         dateFrom = moment.utc();
         dateTo = moment.utc().add('days', 6);
         $('.date-from').text(dateFrom.format(dateFormat));
         $('.date-to').text(dateTo.format(dateFormat));
-        console.log('Done');
+        validateDays();
     });
     
-    
+    // make sure the start date comes before the end date
     function validateDays() {
         if (dateFrom >= dateTo) {
             $('.error-days-text').show();
